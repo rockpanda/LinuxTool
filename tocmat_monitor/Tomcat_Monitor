@@ -1,0 +1,66 @@
+#!/bin/sh
+# ******************************************************
+# Author       : balladpanda
+# Email        : balladpanda@gmail.com
+# Filename     : Tomcat_Monitor
+# Description  : Tomcat continuous monitoring
+# Version      : v1.0
+# Last modified: 2019-01-17 15:14
+# ******************************************************
+
+# 定义环境变量
+#PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:/opt/software/jdk1.7.0_80/bin
+#export JAVA_HOME=/opt/software/jdk1.7.0_80
+#export CLASSPATH=$JAVA_HOME/lib:$JAVA_HOME/lib/tools.jar
+#export PATH=$PATH:$JAVA_HOME/bin
+
+export JAVA_HOME=/usr/local/java/jdk1.7.0_79  
+export JRE_HOME=/usr/local/java/jdk1.7.0_79/jre   
+export CLASSPATH=./:/usr/local/java/jdk1.7.0_79/lib:/usr/local/java/jdk1.7.0_79/jre/lib
+export PATH=$PATH:/usr/local/java/jdk1.7.0_79/bin 
+
+# DEFINE
+
+# 获取tomcat进程ID
+TomcatID=$(ps -ef |grep tomcat |grep -w 'Tomcat'|grep -v 'grep'|awk '{print $2}')
+
+# tomcat启动程序(这里注意tomcat实际安装的路径)
+StartTomcat=/trs/trswcm/Tomcat/bin/startup.sh
+TomcatCache=/trs/trswcm/Tomcat/work
+
+# 定义要监控的页面地址 
+WebUrl=http://23.202.1.46:8080/test/tomcattest.jsp
+
+# 日志输出
+GetPageInfo=/dev/null
+# 日志存放地址
+TomcatMonitorLog=/usr/local/jiaobenlog/TomcatMonitor.log
+
+Monitor()
+{
+  echo " [info] 开始监控tomcat...[ $(date +'%F %H:%M:%S') ] "
+  if [ $TomcatID ] ;
+  then 		 # 这里判断TOMCAT进程是否存在
+    echo " [ info ] 当前tomcat进程ID为:$TomcatID,继续检测页面..."
+    # 检测是否启动成功(成功的话页面会返回状态"200")
+    TomcatServiceCode=$( curl -I -m 10 -o $GetPageInfo -s -w %{http_code} $WebUrl )
+    if [ "$TomcatServiceCode" -eq 200 ] ; 
+    then
+        echo " [ info ] 页面返回码为 "$TomcatServiceCode" ,tomcat监测正常,测试页面正常......"
+    else
+        echo " [ error ] tomcat页面出错,请注意......状态码为 "$TomcatServiceCode" ,错误日志已输出到"$GetPageInfo""
+        echo " [ error ] 页面访问出错,开始重启tomcat"
+        kill -9 $TomcatID  # 杀掉原tomcat进程
+        sleep 3
+        rm -rf $TomcatCache # 清理tomcat缓存
+        $StartTomcat
+    fi
+  else
+    echo " [ error ] tomcat进程不存在!tomcat开始自动重启..."
+    echo " [ info ] $StartTomcat,请稍候......"
+    rm -rf $TomcatCache
+    $StartTomcat 
+  fi
+  echo "------------------------------"
+}
+Monitor>>$TomcatMonitorLog

@@ -1,0 +1,15 @@
+一些常用的脚本，每个脚本里有使用说明
+
+find_disk_usage:查找出目录下占用空间最大的top N目录和文件
+
+get_disk_usage_alert：获取Linux服务器磁盘使用率，可以设置告警阈和邮件告警值进行磁盘监控
+
+get_port_info：获取指定服务端口的统计信息
+
+get_proc_stat：根据进程名或PID或进程命令行参数查询进程详细信息
+
+get_site_status：检测到自己本地访问目标网站的返回状态、访问质量等等信
+
+get_svr_info：获取当前服务器的cpu/mem等信息
+
+ get_top_proc：输出系统当前占用资源（cpu、内存等）最多的Top10进程
