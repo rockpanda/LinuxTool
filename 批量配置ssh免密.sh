@@ -27,7 +27,7 @@ EOF
 # 写个自动免密登录的函数
 send_key () {
 # 修改成自己服务器的密码  
-pwd=zcj@DiDi.028
+pwd=xxxxxx1234567
 # 开始执行
     /usr/bin/expect <<EOF
     set timeout 30
