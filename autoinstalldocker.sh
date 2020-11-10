@@ -1,4 +1,4 @@
-#bin/sh
+#!/bin/sh
 #des: auto install docker  and setting os env
 #by balladpanda<balladpanda@gmail.com>
 #date: 2019年10月27日12:47:02
