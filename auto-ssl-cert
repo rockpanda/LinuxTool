@@ -1,5 +1,5 @@
 #!/bin/bash
-#通过openssl自制私有ssl证书
+#通过openssl自制私有ssl证书（crt格式）
 #By balladpanda<balladpanda@gmail.com>
 #Time 2021年12月14日
 
