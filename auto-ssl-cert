@@ -7,7 +7,7 @@ echo -n '请输入需要ssl证书的域名：'
 read subdomain
 
 #创建存放目录
-mkdir -p ca  server
+mkdir -p ca  server cert
 
 #1.生成证书颁发机构证书
 #生成 CA 证书私钥
@@ -42,7 +42,7 @@ openssl req -sha512 -new \
 #3、生成 x509 v3 扩展文件
 echo -e "\033[31m[Task:生成 x509 v3 扩展文件]\033[0m"
 
-cat > v3.ext <<-EOF
+cat > ./ca/v3.ext <<-EOF
 authorityKeyIdentifier=keyid,issuer
 basicConstraints=CA:FALSE
 keyUsage = digitalSignature, nonRepudiation, keyEncipherment, dataEncipherment
@@ -57,7 +57,7 @@ EOF
 echo -e "\033[31m[Task:使用扩展文件生成主机证书]\033[0m"
 
 openssl x509 -req -sha512 -days 3650 \
-    -extfile v3.ext \
+    -extfile ./ca/v3.ext \
     -CA ./ca/ca.crt -CAkey /ca/ca.key -CAcreateserial \
     -in ./server/$subdomain.csr \
     -out ./server/$subdomain.crt >/dev/null 2>&1 
@@ -65,4 +65,4 @@ openssl x509 -req -sha512 -days 3650 \
 openssl x509 -inform PEM -in ./server/$subdomain.crt -out ./server/$subdomain.cert >/dev/null 2>&1
 
 echo -e "\033[31m[Task:创建完成]\033[0m"
-
+cp ./ca/ca.crt ./server/$subdomain.crt ./server/$subdomain.key cert
