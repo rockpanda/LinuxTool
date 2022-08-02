@@ -126,9 +126,7 @@ service xinetd restart > /dev/null 2>&1
 fi  
   
 if [ $rhel6_version == 1 ] || [ $rhel7_version == 1 ];then  
-cd /tmp  
-tar xjf $dropbear_version.tar.bz2  
-cd $dropbear_version  
+cd /tmp/$dropbear_version  
 ./configure > /dev/null 2>&1  
 make > /dev/null 2>&1  
 make install > /dev/null 2>&1  
@@ -223,9 +221,7 @@ fi
 echo ""  
   
 #编译安装OpenSSL  
-cd /tmp  
-tar xzf $openssl_version.tar.gz  
-cd $openssl_version  
+cd /tmp/$openssl_version  
 ./config -fPIC --prefix=/usr enable-shared > /dev/null 2>&1  
 if [ $? -eq 0 ];then  
 make > /dev/null 2>&1  
@@ -243,9 +239,7 @@ fi
 echo ""  
   
 #编译安装OpenSSH  
-cd /tmp  
-tar xzf $openssh_version.tar.gz    
-cd $openssh_version  
+cd /tmp/$openssh_version  
 ./configure --prefix=/usr --sysconfdir=/etc/ssh --with-pam --with-zlib > /dev/null 2>&1  
 if [ $? -eq 0 ];then  
 make > /dev/null 2>&1  
