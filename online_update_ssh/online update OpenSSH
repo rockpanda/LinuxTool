@@ -15,11 +15,11 @@ date=`date "+%Y%m%d"`
 zlib_version="zlib-1.2.11"  
 dropbear_version="dropbear-2022.82"  
 openssl_version="openssl-1.0.2p"  
-openssh_version="openssh-7.9p1"  
+openssh_version="openssh-8.9p1"  
 zlib_download="http://zlib.net/$zlib_version.tar.gz"  
 dropbear_download="https://mirror.dropbear.nl/mirror/$dropbear_version.tar.bz2"  
 openssl_download="https://www.openssl.org/source/$openssl_version.tar.gz"  
-openssh_download="https://ftp.openbsd.org/pub/OpenBSD/OpenSSH/$openssh_version.tar.gz" 
+openssh_download="https://ftp.openbsd.org/pub/OpenBSD/OpenSSH/portable/$openssh_version.tar.gz" 
 
 system_version=`cat /etc/redhat-release`  
 rhel4_version=`cat /etc/redhat-release | grep "release 4" | wc -l`  
